@@ -73,3 +73,32 @@ def window_median_denoise(stft_data: np.ndarray, energy_threshold: float = 0.6) 
             stft_data[idx] = stft_data[idx - 1]
     
     return stft_data, masked_indices
+
+def impute_with_left(time_series: np.ndarray) -> tuple[np.ndarray, list[int]]:
+    """
+    Impute NaN values in a time series with the last valid value to the left.
+    
+    Args:
+        time_series (np.ndarray): Input time series with NaN values.
+    
+    Returns:
+        a tuple containing:
+        - np.ndarray: Time series with NaN values imputed.
+        - list[int]: Indices of the NaN values that were imputed.
+    """
+    # Create a copy of the time series to avoid modifying the original
+    imputed_series = np.copy(time_series)
+    
+    # Find indices where the series is NaN
+    nan_indices = np.where(np.isnan(imputed_series))[0].tolist()
+    
+    # Early return if there are no NaNs    
+    if len(nan_indices) == 0:
+        return imputed_series, []
+
+    # Impute NaNs with the last valid value to the left
+    for idx in nan_indices:
+        if idx > 0:
+            imputed_series[idx] = imputed_series[idx - 1]
+
+    return imputed_series, nan_indices
