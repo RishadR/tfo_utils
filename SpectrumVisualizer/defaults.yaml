@@ -1,0 +1,15 @@
+LowPass:
+  enabled: False
+  cutoff_frequency: 20  # Hz
+HighPass:
+  enabled: True
+  cutoff_frequency: 0.1  # Hz
+WindowDenoise:
+  enabled: True
+  threshold: 0.2  # Threshold for denoising
+PGA:
+  Ch1: 1.0
+  Ch2: 10.0
+  Ch3: 100.0
+  Ch4: 1000.0
+  Ch5: 10000.0
