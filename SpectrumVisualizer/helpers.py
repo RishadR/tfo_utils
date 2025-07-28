@@ -60,14 +60,19 @@ def window_median_denoise(stft_data: np.ndarray, energy_threshold: float = 0.6) 
     
     # Calculate the median energy
     median_energy = np.median(energy)
-    
-    # Create a mask for windows with energy above the threshold
-    mask = np.abs(energy - median_energy) > (energy_threshold * median_energy)
+
+    # Create a mask for windows with energy above/below the threshold
+    mask = np.abs(energy - median_energy) >= energy_threshold * median_energy
 
     # Get indices of masked windows
     masked_indices = np.where(mask)[0].tolist()
     
     # Impute masked windows with the last non-masked window above it
+    if 0 in masked_indices:
+        # Set the first masked window to the median window (by energy)
+        median_idx = int(np.argsort(np.abs(energy - median_energy))[0])
+        stft_data[0] = stft_data[median_idx]
+    
     for idx in masked_indices:
         if idx > 0:
             stft_data[idx] = stft_data[idx - 1]

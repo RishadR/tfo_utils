@@ -7,6 +7,9 @@ HighPass:
 WindowDenoise:
   enabled: True
   threshold: 0.2  # Threshold for denoising
+SpectrogramLimits:
+  lower: 0.0  # Lower frequency limit in Hz
+  upper: 6.0  # Upper frequency limit in Hz
 PGA:
   Ch1: 1.0
   Ch2: 10.0
